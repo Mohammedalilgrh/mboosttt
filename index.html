@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>MBOOSTT · LUXE DIGITAL EMPORIUM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ... (keep ALL your existing CSS exactly as is) ... */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1c0808;
+      background-image: 
+        radial-gradient(circle at 15% 20%, #4a1a1a 0%, #1a0505 85%),
+        radial-gradient(circle at 85% 80%, #3b1212 0%, #170404 90%);
+      background-blend-mode: overlay;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      color: #f5e9dc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 3rem;
+      position: relative;
+      overflow-x: hidden;
+      letter-spacing: 0.3px;
+    }
+    body::before {
+      content: "";
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(ellipse at 50% 40%, rgba(150, 40, 20, 0.35), transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+    .container { width: 100%; max-width: 1500px; position: relative; z-index: 2; }
+    .luxury-header { text-align: center; margin-bottom: 3rem; position: relative; }
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 12vw, 7rem);
+      font-weight: 900; letter-spacing: 8px; text-transform: uppercase;
+      background: linear-gradient(135deg, #fbe6c2, #e6b17e, #d4a373, #c98d5e, #e6b17e);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      text-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(255,180,120,0.7);
+      filter: drop-shadow(0 8px 12px #00000060);
+      transform: perspective(800px) rotateX(3deg);
+      transition: transform 0.3s ease; line-height: 1.1;
+      position: relative; display: inline-block;
+    }
+    .brand-name::after {
+      content: ''; position: absolute; bottom: -10px; left: 50%;
+      transform: translateX(-50%); width: 60%; height: 2px;
+      background: linear-gradient(90deg, transparent, #c98d5e, transparent);
+    }
+    .brand-name:hover { transform: perspective(900px) rotateX(0deg) scale(1.02); }
+    .tagline {
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 5px;
+      text-transform: uppercase; color: #e3b891; margin-top: 1.2rem;
+      word-spacing: 8px; display: inline-block; padding: 0.7rem 2rem;
+      background: rgba(12, 4, 4, 0.6); backdrop-filter: blur(8px);
+      border-radius: 60px; border: 1px solid #ad6b4a;
+    }
+    .product-grid {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 2.5rem; margin: 2.5rem 0 2rem; perspective: 1500px;
+    }
+    .product-card {
+      background: rgba(28, 10, 10, 0.75); backdrop-filter: blur(12px);
+      border: 1px solid #7a3e2e; border-radius: 32px;
+      padding: 1.8rem 1.2rem 1.5rem; width: 320px; max-width: 90vw;
+      transition: all 0.45s cubic-bezier(0.2, 0.9, 0.4, 1);
+      box-shadow: 0 30px 45px -15px rgba(0,0,0,0.9), 0 0 0 1px #b0643e inset;
+      transform-style: preserve-3d; position: relative;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .product-card:hover {
+      transform: rotateY(3deg) rotateX(2deg) translateY(-15px) scale(1.01);
+      box-shadow: 0 50px 70px -15px #120404, 0 0 35px #bb6b4b;
+      border-color: #d18d5f;
+    }
+    .product-card::after {
+      content: ''; position: absolute; top: 14px; left: 14px; right: 14px; bottom: 14px;
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(255,190,140,0.1), transparent 55%);
+      pointer-events: none; z-index: 1;
+    }
+    .product-media {
+      width: 100%; aspect-ratio: 1/1; border-radius: 22px;
+      background: #1a0808; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.3rem; overflow: hidden; border: 2px solid #9b5e3c;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.8); position: relative; z-index: 2;
+    }
+    .carousel-container { width: 100%; height: 100%; position: relative; overflow: hidden; }
+    .carousel-slide {
+      width: 100%; height: 100%; position: absolute; top: 0; left: 0;
+      opacity: 0; transition: opacity 0.5s ease;
+    }
+    .carousel-slide.active { opacity: 1; }
+    .carousel-slide img, .carousel-slide video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .carousel-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,0.7); color: #e6c39a;
+      border: 1px solid #9b5e3c; border-radius: 50%;
+      width: 35px; height: 35px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 3; transition: all 0.3s; font-size: 0.9rem;
+    }
+    .carousel-btn:hover { background: rgba(120, 50, 30, 0.9); border-color: #d18d5f; }
+    .carousel-btn.prev { left: 10px; }
+    .carousel-btn.next { right: 10px; }
+    .carousel-dots {
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; z-index: 3;
+    }
+    .carousel-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.3s;
+    }
+    .carousel-dot.active { background: #e6c39a; transform: scale(1.3); }
+    .video-ad-container {
+      width: 100%; aspect-ratio: 16/9; border-radius: 22px;
+      overflow: hidden; position: relative;
+    }
+    .product-title {
+      font-family: 'Playfair Display', serif; font-weight: 700;
+      font-size: 1.8rem; letter-spacing: 1px; color: #fae3c8;
+      margin: 0.6rem 0 0.3rem; z-index: 2;
+      text-shadow: 0 3px 10px black; text-align: center; word-break: break-word;
+    }
+    .product-description {
+      font-size: 0.85rem; color: #bda38b; text-align: center;
+      margin-bottom: 0.5rem; line-height: 1.3; z-index: 2;
+    }
+    .product-price {
+      font-family: 'Inter', sans-serif; font-weight: 800; font-size: 2.2rem;
+      color: #e9b384; background: rgba(0,0,0,0.4); padding: 0.3rem 1.2rem;
+      border-radius: 40px; letter-spacing: 2px; margin: 0.8rem 0;
+      border: 1px solid #a86644; z-index: 2;
+    }
+    .btn-buy {
+      background: linear-gradient(145deg, #a54f2e, #6e2f1c);
+      border: none; color: #ffeedd; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 2px; padding: 0.9rem 2rem; border-radius: 50px;
+      font-size: 0.9rem; cursor: pointer;
+      box-shadow: 0 12px 18px -5px #00000080, 0 0 0 1px #c47b4a inset;
+      transition: all 0.3s; z-index: 5; margin-bottom: 1rem; width: 100%;
+    }
+    .btn-buy:hover {
+      background: linear-gradient(145deg, #c26037, #8a3b22);
+      box-shadow: 0 20px 28px -8px #000, 0 0 25px #e07e4a;
+      transform: translateY(-4px); letter-spacing: 3px;
+    }
+    .btn-buy:disabled { opacity: 0.7; cursor: default; letter-spacing: 2px; transform: none; }
+    .hidden-link-area {
+      font-size: 0.8rem; color: #c9a37b; text-align: center; opacity: 0.9;
+      letter-spacing: 1px; word-break: break-all; background: rgba(0,0,0,0.3);
+      padding: 0.3rem 0.8rem; border-radius: 20px; max-width: 100%;
+      display: none; z-index: 5;
+    }
+    .admin-trigger {
+      position: fixed; bottom: 25px; right: 25px; width: 50px; height: 50px;
+      background: rgba(25, 5, 5, 0.8); border: 1px solid #6b3a2a; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #dbb08c; font-size: 1.3rem; cursor: pointer; transition: all 0.25s;
+      z-index: 100; backdrop-filter: blur(5px); opacity: 0.4;
+    }
+    .admin-trigger:hover {
+      opacity: 1; border-color: #c98d5e; box-shadow: 0 0 25px #af5f38; transform: scale(1.1);
+    }
+    .admin-panel {
+      position: fixed; bottom: 90px; right: 25px; width: 480px; max-width: 92vw;
+      max-height: 80vh; overflow-y: auto; background: rgba(15, 5, 5, 0.98);
+      backdrop-filter: blur(20px); border: 2px solid #9b5e3c; border-radius: 28px;
+      padding: 1.8rem; box-shadow: 0 40px 50px black; z-index: 200;
+      display: none; transform: translateY(20px); transition: 0.3s;
+    }
+    .admin-panel.active { display: block; transform: translateY(0); }
+    .admin-panel h3 {
+      font-family: 'Playfair Display', serif; color: #efcdad;
+      text-align: center; letter-spacing: 2px; margin-bottom: 1rem;
+    }
+    .admin-input, .admin-textarea {
+      width: 100%; margin: 0.5rem 0; padding: 0.9rem; border-radius: 18px;
+      background: #2f1212; border: 1px solid #b27650; color: #f5e1cf;
+      font-weight: 500; font-size: 0.9rem; outline: none;
+    }
+    .admin-input:focus, .admin-textarea:focus {
+      border-color: #e09a6a; box-shadow: 0 0 10px #c45f35;
+    }
+    .admin-btn {
+      background: #7a3a20; border: none; color: white; font-weight: bold;
+      padding: 0.9rem; border-radius: 40px; margin-top: 0.6rem;
+      width: 100%; cursor: pointer; letter-spacing: 1px; transition: 0.2s;
+    }
+    .admin-btn:hover { background: #9e4d2a; box-shadow: 0 5px 15px #c25a2b; }
+    .admin-btn.danger { background: #4d1e1e; border: 1px solid #a84a3a; }
+    .admin-btn.edit { background: #3a2a1a; border: 1px solid #b27650; }
+    .password-area { display: flex; flex-direction: column; gap: 10px; }
+    .admin-row { display: flex; gap: 10px; }
+    .admin-row .admin-btn { flex: 1; }
+    .media-note { font-size: 0.7rem; color: #b6967a; margin-top: -0.3rem; margin-bottom: 0.5rem; }
+    .file-upload-label {
+      display: block; text-align: center; padding: 1rem;
+      border: 2px dashed #9b5e3c; border-radius: 16px;
+      background: #2f1212; cursor: pointer; margin: 0.5rem 0;
+      color: #e6c2a2; font-weight: 600;
+    }
+    .file-upload-label:hover { border-color: #e09a6a; background: #3a1818; }
+    .media-list { display: flex; flex-wrap: wrap; gap: 5px; margin: 0.5rem 0; }
+    .media-thumb {
+      width: 50px; height: 50px; object-fit: cover; border-radius: 8px;
+      border: 1px solid #9b5e3c; cursor: pointer;
+    }
+    .media-thumb:hover { border-color: #e09a6a; }
+    .edit-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8); z-index: 300; display: none;
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .edit-overlay.active { display: flex; }
+    .edit-form {
+      background: #1a0a0a; border: 2px solid #9b5e3c; border-radius: 28px;
+      padding: 2rem; width: 500px; max-width: 90vw; max-height: 80vh; overflow-y: auto;
+    }
+    @media (max-width: 700px) {
+      .product-card { width: 85%; max-width: 350px; }
+      .admin-panel { right: 10px; left: 10px; bottom: 80px; width: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="luxury-header">
+      <h1 class="brand-name">MBOOSTT</h1>
+      <div class="tagline">LUXE DIGITAL · LIMITLESS</div>
+    </div>
+
+    <div class="product-grid" id="productGrid"></div>
+
+    <div class="admin-trigger" id="adminTrigger" title="secret admin">
+      <i class="fas fa-lock"></i>
+    </div>
+
+    <div class="admin-panel" id="adminPanel">
+      <h3>🔐 MBOOSTT CONTROL</h3>
+      <div id="loginSection">
+        <div class="password-area">
+          <input type="password" id="adminPassInput" class="admin-input" placeholder="Admin password">
+          <button class="admin-btn" id="adminLoginBtn">ENTER</button>
+          <div style="font-size: 0.7rem; color:#b98e6d; text-align:center;">hidden access</div>
+        </div>
+      </div>
+      <div id="adminContent" style="display: none;">
+        <p style="color:#e6c2a2; margin-bottom:0.8rem;"><i class="fas fa-crown"></i> Master Panel</p>
+        <input type="text" id="newProductTitle" class="admin-input" placeholder="Product title">
+        <input type="text" id="newProductPrice" class="admin-input" placeholder="Price (e.g. 49)">
+        <textarea id="newProductDescription" class="admin-input" placeholder="Product description (optional)" rows="2"></textarea>
+        <input type="text" id="newProductLink" class="admin-input" placeholder="Hidden link (revealed after buy)">
+        <input type="text" id="newProductWaylLink" class="admin-input" placeholder="🔥 Wayl Checkout URL (e.g. https://pay.wayl.io/xxxx)">
+        
+        <label for="newProductFile" class="file-upload-label">
+          <i class="fas fa-cloud-upload-alt"></i> Upload Images or Videos (multiple)
+        </label>
+        <input type="file" id="newProductFile" accept="image/*,video/*" multiple style="display:none;">
+        
+        <div id="mediaPreview" class="media-list"></div>
+        <div class="media-note">💡 Upload multiple images for carousel or video for ads</div>
+        
+        <button class="admin-btn" id="addProductBtn"><i class="fas fa-plus-circle"></i> Add Product</button>
+        <div class="admin-row">
+          <button class="admin-btn danger" id="removeLastBtn"><i class="fas fa-trash"></i> Remove Last</button>
+          <button class="admin-btn" id="resetDefaultBtn"><i class="fas fa-sync"></i> Reset Demo</button>
+        </div>
+        <hr style="border-color:#7a4a2e; margin:1rem 0;">
+        <p style="font-size:0.75rem;">Double-click any product to edit or delete it.</p>
+      </div>
+    </div>
+
+    <div class="edit-overlay" id="editOverlay">
+      <div class="edit-form">
+        <h3 style="font-family:'Playfair Display',serif; color:#efcdad; text-align:center;">✏️ EDIT PRODUCT</h3>
+        <input type="text" id="editTitle" class="admin-input" placeholder="Title">
+        <input type="text" id="editPrice" class="admin-input" placeholder="Price">
+        <textarea id="editDescription" class="admin-input" placeholder="Description" rows="2"></textarea>
+        <input type="text" id="editLink" class="admin-input" placeholder="Hidden link">
+        <input type="text" id="editWaylLink" class="admin-input" placeholder="🔥 Wayl Checkout URL">
+        <div class="admin-row">
+          <button class="admin-btn" id="saveEditBtn"><i class="fas fa-save"></i> Save</button>
+          <button class="admin-btn danger" id="deleteProductBtn"><i class="fas fa-trash"></i> Delete</button>
+          <button class="admin-btn" id="cancelEditBtn">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ========== CONFIG 🔥 ==========
+      const ADMIN_PASSWORD = "mboostt2024";
+      // 🔥 CHANGE THIS after deploying your Render backend
+      const BACKEND_URL = "https://mboostt-backend.onrender.com";
+
+      const adminTrigger = document.getElementById('adminTrigger');
+      const adminPanel = document.getElementById('adminPanel');
+      const loginSection = document.getElementById('loginSection');
+      const adminContent = document.getElementById('adminContent');
+      const adminPassInput = document.getElementById('adminPassInput');
+      const adminLoginBtn = document.getElementById('adminLoginBtn');
+      const addProductBtn = document.getElementById('addProductBtn');
+      const removeLastBtn = document.getElementById('removeLastBtn');
+      const resetDefaultBtn = document.getElementById('resetDefaultBtn');
+      const newProductTitle = document.getElementById('newProductTitle');
+      const newProductPrice = document.getElementById('newProductPrice');
+      const newProductDescription = document.getElementById('newProductDescription');
+      const newProductLink = document.getElementById('newProductLink');
+      const newProductWaylLink = document.getElementById('newProductWaylLink');
+      const newProductFile = document.getElementById('newProductFile');
+      const mediaPreview = document.getElementById('mediaPreview');
+      const productGrid = document.getElementById('productGrid');
+      
+      const editOverlay = document.getElementById('editOverlay');
+      const editTitle = document.getElementById('editTitle');
+      const editPrice = document.getElementById('editPrice');
+      const editDescription = document.getElementById('editDescription');
+      const editLink = document.getElementById('editLink');
+      const editWaylLink = document.getElementById('editWaylLink');
+      const saveEditBtn = document.getElementById('saveEditBtn');
+      const deleteProductBtn = document.getElementById('deleteProductBtn');
+      const cancelEditBtn = document.getElementById('cancelEditBtn');
+
+      let uploadedFiles = [];
+      let currentEditCard = null;
+
+      newProductFile.addEventListener('change', function(event) {
+        const files = event.target.files;
+        uploadedFiles = [];
+        mediaPreview.innerHTML = '';
+        for (let file of files) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            uploadedFiles.push({
+              data: e.target.result,
+              type: file.type.startsWith('video') ? 'video' : 'image',
+              name: file.name
+            });
+            const thumb = document.createElement('img');
+            thumb.src = e.target.result;
+            thumb.className = 'media-thumb';
+            thumb.title = file.name;
+            mediaPreview.appendChild(thumb);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      adminTrigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        adminPanel.classList.toggle('active');
+      });
+
+      adminLoginBtn.addEventListener('click', function() {
+        const pass = adminPassInput.value.trim();
+        if (pass === ADMIN_PASSWORD) {
+          loginSection.style.display = 'none';
+          adminContent.style.display = 'block';
+          adminPassInput.value = '';
+        } else {
+          alert('❌ Access denied.');
+          adminPassInput.value = '';
+        }
+      });
+      adminPassInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') adminLoginBtn.click();
+      });
+
+      function createCarouselMedia(files) {
+        if (!files || files.length === 0) {
+          return `<img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Crect width='240' height='240' fill='%23331a12'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia' font-size='18' fill='%23e6c39a'%3EMBOOSTT%3C/text%3E%3C/svg%3E" alt="Mboostt">`;
+        }
+        if (files.length === 1) {
+          if (files[0].type === 'video') {
+            return `<div class="video-ad-container">
+              <video controls autoplay muted loop style="width:100%;height:100%;object-fit:cover;">
+                <source src="${files[0].data}" type="video/mp4">
+              </video></div>`;
+          } else {
+            return `<img src="${files[0].data}" alt="product" style="width:100%;height:100%;object-fit:cover;">`;
+          }
+        }
+        let slides = '', dots = '';
+        files.forEach((file, index) => {
+          const activeClass = index === 0 ? 'active' : '';
+          slides += `<div class="carousel-slide ${activeClass}">`;
+          if (file.type === 'video') {
+            slides += `<video controls autoplay muted loop style="width:100%;height:100%;object-fit:cover;">
+              <source src="${file.data}" type="video/mp4"></video>`;
+          } else {
+            slides += `<img src="${file.data}" alt="slide ${index + 1}">`;
+          }
+          slides += `</div>`;
+          dots += `<div class="carousel-dot ${activeClass}" data-index="${index}"></div>`;
+        });
+        return `<div class="carousel-container">${slides}
+          <button class="carousel-btn prev"><i class="fas fa-chevron-left"></i></button>
+          <button class="carousel-btn next"><i class="fas fa-chevron-right"></i></button>
+          <div class="carousel-dots">${dots}</div></div>`;
+      }
+
+      function attachCarouselBehavior(card) {
+        const carousel = card.querySelector('.carousel-container');
+        if (!carousel) return;
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const dots = carousel.querySelectorAll('.carousel-dot');
+        const prevBtn = carousel.querySelector('.carousel-btn.prev');
+        const nextBtn = carousel.querySelector('.carousel-btn.next');
+        let currentSlide = 0;
+        function goToSlide(index) {
+          slides.forEach(s => s.classList.remove('active'));
+          dots.forEach(d => d.classList.remove('active'));
+          slides[index].classList.add('active');
+          dots[index].classList.add('active');
+          currentSlide = index;
+        }
+        if (nextBtn) nextBtn.addEventListener('click', () => goToSlide((currentSlide + 1) % slides.length));
+        if (prevBtn) prevBtn.addEventListener('click', () => goToSlide((currentSlide - 1 + slides.length) % slides.length));
+        dots.forEach(dot => dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.index))));
+      }
+
+      // 🔥 UPDATED: Buy behavior now calls Wayl checkout via backend
+      function attachBuyBehavior(card) {
+        const buyBtn = card.querySelector('.btn-buy');
+        const hiddenDiv = card.querySelector('.hidden-link-area');
+        const waylLink = card.dataset.waylLink;
+        
+        if (buyBtn && hiddenDiv) {
+          buyBtn.addEventListener('click', async function() {
+            // If no Wayl link, just reveal (fallback)
+            if (!waylLink || waylLink === '#' || waylLink === '') {
+              hiddenDiv.style.display = 'block';
+              hiddenDiv.style.color = '#ffd9aa';
+              buyBtn.textContent = '✓ OWNED';
+              buyBtn.disabled = true;
+              return;
+            }
+
+            buyBtn.textContent = 'PROCESSING...';
+            buyBtn.disabled = true;
+
+            try {
+              // 🔥 Create checkout session on Render backend
+              const response = await fetch(`${BACKEND_URL}/api/create-checkout`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  productId: card.dataset.productId,
+                  title: card.querySelector('.product-title').textContent,
+                  price: card.querySelector('.product-price').textContent,
+                  waylLink: waylLink,
+                  hiddenLink: hiddenDiv.textContent.replace('🔓 ', '').trim()
+                })
+              });
+
+              const data = await response.json();
+              
+              if (data.success && data.checkoutUrl) {
+                // Open Wayl checkout
+                window.location.href = data.checkoutUrl;
+              } else {
+                throw new Error(data.error || 'Checkout failed');
+              }
+            } catch (err) {
+              console.error('Checkout error:', err);
+              buyBtn.textContent = 'TRY AGAIN';
+              buyBtn.disabled = false;
+              alert('⚠️ Checkout error: ' + err.message);
+            }
+          });
+        }
+      }
+
+      function attachEditBehavior(card) {
+        card.addEventListener('dblclick', function() {
+          if (adminContent.style.display !== 'block') return;
+          currentEditCard = card;
+          editTitle.value = card.querySelector('.product-title').textContent;
+          editPrice.value = card.querySelector('.product-price').textContent;
+          const desc = card.querySelector('.product-description');
+          editDescription.value = desc ? desc.textContent : '';
+          const link = card.querySelector('.hidden-link-area');
+          editLink.value = link ? link.textContent.replace('🔓 ', '') : '';
+          editWaylLink.value = card.dataset.waylLink || '';
+          editOverlay.classList.add('active');
+        });
+      }
+
+      function addProduct(data) {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        const pid = 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
+        card.setAttribute('data-product-id', pid);
+        card.dataset.waylLink = data.waylLink || '';
+        
+        const mediaHtml = createCarouselMedia(data.files || []);
+        
+        card.innerHTML = `
+          <div class="product-media">${mediaHtml}</div>
+          <div class="product-title">${data.title}</div>
+          ${data.description ? `<div class="product-description">${data.description}</div>` : ''}
+          <div class="product-price">${data.price}</div>
+          <button class="btn-buy">ACQUIRE</button>
+          <div class="hidden-link-area" style="display:none;">🔓 ${data.link || '#'}</div>
+        `;
+        
+        attachCarouselBehavior(card);
+        attachBuyBehavior(card);
+        attachEditBehavior(card);
+        productGrid.appendChild(card);
+        return card;
+      }
+
+      addProductBtn.addEventListener('click', function() {
+        const title = newProductTitle.value.trim() || 'UNTITLED';
+        const price = newProductPrice.value.trim() || '$XX';
+        const description = newProductDescription.value.trim() || '';
+        const link = newProductLink.value.trim() || '#';
+        const waylLink = newProductWaylLink.value.trim() || '';
+        
+        addProduct({
+          title, price, description, link, waylLink,
+          files: uploadedFiles.length > 0 ? uploadedFiles : null
+        });
+        
+        newProductTitle.value = '';
+        newProductPrice.value = '';
+        newProductDescription.value = '';
+        newProductLink.value = '';
+        newProductWaylLink.value = '';
+        newProductFile.value = '';
+        uploadedFiles = [];
+        mediaPreview.innerHTML = '';
+      });
+
+      removeLastBtn.addEventListener('click', function() {
+        const cards = productGrid.querySelectorAll('.product-card');
+        if (cards.length > 0) productGrid.removeChild(cards[cards.length - 1]);
+        else alert('No products left.');
+      });
+
+      resetDefaultBtn.addEventListener('click', function() {
+        productGrid.innerHTML = '';
+        const demoProducts = [
+          { 
+            title: 'MANIFEST WEALTH', 
+            price: '$49', 
+            description: 'Digital masterpiece to unlock your potential',
+            waylLink: 'https://pay.wayl.io/YOUR_LINK_1',
+            files: [{ type: 'image', data: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Crect width='240' height='240' fill='%232e140e'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia' font-size='20' fill='%23e6c39a'%3E📖 LUXE EBOOK%3C/text%3E%3C/svg%3E" }],
+            link: 'https://mboostt.io/secure/ebook-manifest' 
+          },
+          { 
+            title: 'MINDSET AUDIO', 
+            price: '$89', 
+            description: 'Premium audio course for elite mindset',
+            waylLink: 'https://pay.wayl.io/YOUR_LINK_2',
+            files: [
+              { type: 'image', data: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Crect width='240' height='240' fill='%232b0f0f'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='18' fill='%23d9b48f'%3E🎧 AUDIO%3C/text%3E%3C/svg%3E" },
+              { type: 'image', data: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Crect width='240' height='240' fill='%23331212'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='18' fill='%23d9b48f'%3E🎵 AUDIO 2%3C/text%3E%3C/svg%3E" }
+            ],
+            link: 'https://mboostt.io/secure/audio-mindset' 
+          },
+          { 
+            title: 'ELITE TG BOT', 
+            price: '$129', 
+            description: 'Automated Telegram bot for success',
+            waylLink: 'https://pay.wayl.io/YOUR_LINK_3',
+            files: [{ type: 'image', data: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Crect width='240' height='240' fill='%23331212'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='22' fill='%23d9b48f'%3E🤖 BOT%3C/text%3E%3C/svg%3E" }],
+            link: 'https://t.me/elite_mboostt_bot' 
+          }
+        ];
+        demoProducts.forEach(p => addProduct(p));
+      });
+
+      saveEditBtn.addEventListener('click', function() {
+        if (!currentEditCard) return;
+        currentEditCard.querySelector('.product-title').textContent = editTitle.value || 'UNTITLED';
+        currentEditCard.querySelector('.product-price').textContent = editPrice.value || '$XX';
+        
+        const descElement = currentEditCard.querySelector('.product-description');
+        const descText = editDescription.value.trim();
+        if (descText && descElement) descElement.textContent = descText;
+        else if (descText && !descElement) {
+          const titleElement = currentEditCard.querySelector('.product-title');
+          const desc = document.createElement('div');
+          desc.className = 'product-description';
+          desc.textContent = descText;
+          titleElement.after(desc);
+        } else if (!descText && descElement) descElement.remove();
+        
+        const linkElement = currentEditCard.querySelector('.hidden-link-area');
+        linkElement.textContent = '🔓 ' + (editLink.value.trim() || '#');
+        currentEditCard.dataset.waylLink = editWaylLink.value.trim();
+        
+        editOverlay.classList.remove('active');
+        currentEditCard = null;
+      });
+
+      deleteProductBtn.addEventListener('click', function() {
+        if (!currentEditCard) return;
+        currentEditCard.remove();
+        editOverlay.classList.remove('active');
+        currentEditCard = null;
+      });
+
+      cancelEditBtn.addEventListener('click', function() {
+        editOverlay.classList.remove('active');
+        currentEditCard = null;
+      });
+
+      document.addEventListener('click', function(event) {
+        if (!adminPanel.contains(event.target) && event.target !== adminTrigger && !adminTrigger.contains(event.target)) {
+          adminPanel.classList.remove('active');
+        }
+      });
+      adminPanel.addEventListener('click', (e) => e.stopPropagation());
+
+      resetDefaultBtn.click();
+    })();
+  </script>
+
+  <script>
+    (function(){
+      function applyTilt(card) {
+        card.addEventListener('mousemove', function(e) {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          card.style.transform = `rotateY(${x*8}deg) rotateX(${y*-6}deg) translateY(-10px) scale(1.02)`;
+        });
+        card.addEventListener('mouseleave', function() {
+          card.style.transform = 'rotateY(0deg) rotateX(0deg) translateY(0) scale(1)';
+        });
+      }
+      function bindTilt() {
+        document.querySelectorAll('.product-card').forEach(card => {
+          if (!card.dataset.tiltBound) {
+            card.dataset.tiltBound = 'true';
+            applyTilt(card);
+          }
+        });
+      }
+      bindTilt();
+      const observer = new MutationObserver(bindTilt);
+      observer.observe(document.getElementById('productGrid'), { childList: true });
+    })();
+  </script>
+</body>
+</html>
