@@ -4,9 +4,7 @@ const crypto = require('crypto');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
-app.use(express.json({ limit: '10mb' }));
-
+app.use(express.static(__dirname));  // 🔥 serves index.html
 // In-memory order store (survives while server is up; upgrade to DB later)
 const orders = new Map();
 const deliveredProducts = new Map();
